@@ -1,21 +1,16 @@
 #!/bin/bash
 
-# Exit immediately on error
 set -e
-
 echo "🚀 Creating Vue 3 + Vite + Vuetify project..."
 
-# # Create Vite project
 # npm create vite@latest fruit-search-app -- --template vue
 # cd fruit-search-app
 
-# # Install dependencies
-# npm install
-# npm install vuetify@next vue-router sass sass-loader@^12.0.0 axios
+npm install
+npm install vuetify@next vue-router sass sass-loader@^12.0.0 axios
 
-# Create directories
-mkdir -p   plugins
 mkdir -p   components
+mkdir -p   plugins
 
 # Create Vuetify plugin
 cat <<EOF >   plugins/vuetify.js
@@ -30,7 +25,7 @@ export default createVuetify({
 })
 EOF
 
-# Create FruitSearch.vue component
+# Create FruitSearch.vue
 cat <<EOF >   components/FruitSearch.vue
 <template>
   <v-container class="mt-5">
@@ -112,6 +107,6 @@ import FruitSearch from './components/FruitSearch.vue'
 EOF
 
 echo "✅ Project setup complete!"
-echo "👉 Run the project:"
+echo "👉 To run locally:"
 echo "   cd fruit-search-app"
 echo "   npm run dev"
