@@ -1,102 +1,117 @@
 #!/bin/bash
 
-# Exit on error
+# Exit immediately on error
 set -e
 
-# APP_NAME="fruit-search-app"
+echo "🚀 Creating Vue 3 + Vite + Vuetify project..."
 
-# echo "🔧 Creating Vue 3 + Vite + Vuetify project..."
-# npm create vite@latest $APP_NAME -- --template vue
-# cd $APP_NAME
+# # Create Vite project
+# npm create vite@latest fruit-search-app -- --template vue
+# cd fruit-search-app
 
-# echo "📦 Installing dependencies..."
+# # Install dependencies
 # npm install
-# npm install vuetify@next axios @mdi/font vue-router
-# npm install sass sass-loader@^13.0.0 -D
+# npm install vuetify@next vue-router sass sass-loader@^12.0.0 axios
+
+# Create directories
+mkdir -p   plugins
+mkdir -p   components
 
 # Create Vuetify plugin
-mkdir -p src/plugins
-cat <<EOF > src/plugins/vuetify.js
+cat <<EOF >   plugins/vuetify.js
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 export default createVuetify({
-  icons: {
-    defaultSet: 'mdi',
-    aliases,
-    sets: { mdi }
-  }
+  components,
+  directives,
 })
 EOF
 
-# Set up main.js
-cat <<EOF > src/main.js
-import { createApp } from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify'
-import '@mdi/font/css/materialdesignicons.css'
-
-createApp(App).use(vuetify).mount('#app')
-EOF
-
-# Create search UI in App.vue
-cat <<EOF > src/App.vue
+# Create FruitSearch.vue component
+cat <<EOF >   components/FruitSearch.vue
 <template>
-  <v-app>
-    <v-main>
-      <v-container>
-        <v-text-field
-          v-model="search"
-          label="Search Fruit"
-          @keyup.enter="fetchFruits"
-          append-icon="mdi-magnify"
-          @click:append="fetchFruits"
-        ></v-text-field>
+  <v-container class="mt-5">
+    <v-text-field
+      v-model="query"
+      label="Search fruits"
+      prepend-icon="mdi-magnify"
+      @input="searchFruits"
+      clearable
+    ></v-text-field>
 
-        <v-list two-line>
-          <v-list-item
-            v-for="fruit in results"
-            :key="fruit.id"
-          >
-            <v-list-item-content>
-              <v-list-item-title>{{ fruit.fruits }}</v-list-item-title>
-              <v-list-item-subtitle>Quantity: {{ fruit.number }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-container>
-    </v-main>
-  </v-app>
+    <v-list>
+      <v-list-item
+        v-for="fruit in fruits"
+        :key="fruit.id"
+      >
+        <v-list-item-content>
+          <v-list-item-title>{{ fruit.fruits }}</v-list-item-title>
+          <v-list-item-subtitle>Quantity: {{ fruit.number }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+
+    <div v-if="loading" class="text-center mt-5">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </div>
+  </v-container>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
 
-const search = ref('')
-const results = ref([])
+const query = ref('')
+const fruits = ref([])
+const loading = ref(false)
 
-const fetchFruits = async () => {
+const searchFruits = async () => {
+  if (query.value.length === 0) {
+    fruits.value = []
+    return
+  }
+
+  loading.value = true
   try {
-    const token = localStorage.getItem('token') // Must be set after login
-    const response = await axios.get(
-      \`https://xnorth.pythonanywhere.com/api/search?q=\${search.value}\`,
-      {
-        headers: {
-          Authorization: \`Bearer \${token}\`
-        }
-      }
-    )
-    results.value = response.data
-  } catch (error) {
-    alert('Failed to search fruits.')
+    const res = await axios.get(\`https://xnorth.pythonanywhere.com/api/search?q=\${query.value}\`)
+    fruits.value = res.data
+  } catch (err) {
+    console.error(err)
+  } finally {
+    loading.value = false
   }
 }
 </script>
 EOF
 
-# Done
-echo "✅ Search-only Vue app ready in ./$APP_NAME"
-echo "👉 To run it:"
-echo "cd $APP_NAME && npm run dev"
+# Replace main.js
+cat <<EOF >   main.js
+import { createApp } from 'vue'
+import App from './App.vue'
+import vuetify from './plugins/vuetify'
+
+createApp(App).use(vuetify).mount('#app')
+EOF
+
+# Replace App.vue
+cat <<EOF >   App.vue
+<template>
+  <v-app>
+    <v-main>
+      <FruitSearch />
+    </v-main>
+  </v-app>
+</template>
+
+<script setup>
+import FruitSearch from './components/FruitSearch.vue'
+</script>
+EOF
+
+echo "✅ Project setup complete!"
+echo "👉 Run the project:"
+echo "   cd fruit-search-app"
+echo "   npm run dev"
