@@ -1,18 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import Dashboard from '@/views/Dashboard.vue'
-import Login from '@/views/Login.vue'
-import { useAuthStore } from '@/stores/auth'
+import LoginView from '../views/LoginView.vue'
+import DashboardView from '../views/DashboardView.vue'
+import UpdateFruits from '../views/UpdateFruits.vue'
+import { useAuthStore } from '../store/auth'
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/login', name: 'Login', component: Login },
-  { 
-    path: '/dashboard', 
-    name: 'Dashboard', 
-    component: Dashboard,
-    meta: { requiresAuth: true }
-  }
+  { path: '/', name: 'Login', component: LoginView },
+  { path: '/dashboard', name: 'Dashboard', component: DashboardView },
+  { path: '/update', name: 'Update', component: UpdateFruits }
 ]
 
 const router = createRouter({
@@ -21,12 +16,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
-  if (to.meta.requiresAuth && !authStore.user) {
-    next('/login')
-  } else {
-    next()
-  }
+  const auth = useAuthStore()
+  if (to.name !== 'Login' && !auth.isLoggedIn()) next({ name: 'Login' })
+  else next()
 })
 
 export default router
