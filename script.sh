@@ -12,8 +12,8 @@ set -e
 # npm install vue-router@4 pinia axios vuetify@3.5.10 @vuetify/icons-material --save
 
 # Vuetify setup
-mkdir -p src/plugins
-cat > src/plugins/vuetify.js <<'EOF'
+mkdir -p  plugins
+cat >  plugins/vuetify.js <<'EOF'
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import { aliases, md } from "vuetify/iconsets/md";
@@ -34,8 +34,8 @@ export default createVuetify({
 EOF
 
 # Pinia store setup for auth
-mkdir -p src/store
-cat > src/store/auth.js <<'EOF'
+mkdir -p  store
+cat >  store/auth.js <<'EOF'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
@@ -67,8 +67,8 @@ export const useAuthStore = defineStore('auth', {
 EOF
 
 # Vue Router setup
-mkdir -p src/router
-cat > src/router/index.js <<'EOF'
+mkdir -p  router
+cat >  router/index.js <<'EOF'
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import DashboardView from '../views/DashboardView.vue'
@@ -96,7 +96,7 @@ export default router
 EOF
 
 # App.vue
-cat > src/App.vue <<'EOF'
+cat >  App.vue <<'EOF'
 <template>
   <v-app>
     <v-main>
@@ -110,7 +110,7 @@ cat > src/App.vue <<'EOF'
 EOF
 
 # main.js
-cat > src/main.js <<'EOF'
+cat >  main.js <<'EOF'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -128,10 +128,10 @@ app.mount('#app')
 EOF
 
 # Views
-mkdir -p src/views
+mkdir -p  views
 
 # LoginView.vue
-cat > src/views/LoginView.vue <<'EOF'
+cat >  views/LoginView.vue <<'EOF'
 <template>
   <v-container>
     <v-form @submit.prevent="submit">
@@ -161,7 +161,7 @@ const submit = async () => {
 EOF
 
 # DashboardView.vue
-cat > src/views/DashboardView.vue <<'EOF'
+cat >  views/DashboardView.vue <<'EOF'
 <template>
   <v-container>
     <h1>Fruits Dashboard</h1>
@@ -196,7 +196,7 @@ onMounted(async () => {
 EOF
 
 # UpdateFruits.vue
-cat > src/views/UpdateFruits.vue <<'EOF'
+cat >  views/UpdateFruits.vue <<'EOF'
 <template>
   <v-container>
     <h1>Update Fruits</h1>
