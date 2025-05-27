@@ -3,16 +3,16 @@
 # Exit on error
 set -e
 
-APP_NAME="fruit-search-app"
+# APP_NAME="fruit-search-app"
 
-echo "🔧 Creating Vue 3 + Vite + Vuetify project..."
-npm create vite@latest $APP_NAME -- --template vue
-cd $APP_NAME
+# echo "🔧 Creating Vue 3 + Vite + Vuetify project..."
+# npm create vite@latest $APP_NAME -- --template vue
+# cd $APP_NAME
 
-echo "📦 Installing dependencies..."
-npm install
-npm install vuetify@next axios @mdi/font vue-router
-npm install sass sass-loader@^13.0.0 -D
+# echo "📦 Installing dependencies..."
+# npm install
+# npm install vuetify@next axios @mdi/font vue-router
+# npm install sass sass-loader@^13.0.0 -D
 
 # Create Vuetify plugin
 mkdir -p src/plugins

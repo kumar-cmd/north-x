@@ -2,10 +2,10 @@
 # script.sh
 
 # Create project structure
-mkdir -p src/{assets,components,layouts,router,stores,services,views}
+mkdir -p   {assets,components,layouts,router,stores,services,views}
 
 # Create main files
-cat > src/main.js <<EOL
+cat >   main.js <<EOL
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from 'pinia'
@@ -20,7 +20,7 @@ app.use(router)
 app.mount('#app')
 EOL
 
-cat > src/plugins/vuetify.js <<EOL
+cat >   plugins/vuetify.js <<EOL
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
@@ -43,7 +43,7 @@ export default createVuetify({
 })
 EOL
 
-cat > src/router/index.js <<EOL
+cat >   router/index.js <<EOL
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Dashboard from '@/views/Dashboard.vue'
@@ -78,7 +78,7 @@ router.beforeEach((to, from, next) => {
 export default router
 EOL
 
-cat > src/stores/auth.js <<EOL
+cat >   stores/auth.js <<EOL
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
@@ -111,7 +111,7 @@ export const useAuthStore = defineStore('auth', {
 })
 EOL
 
-cat > src/services/api.js <<EOL
+cat >   services/api.js <<EOL
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
@@ -151,7 +151,7 @@ export default {
 }
 EOL
 
-cat > src/views/Login.vue <<EOL
+cat >   views/Login.vue <<EOL
 <template>
   <v-container class="fill-height">
     <v-row justify="center">
@@ -206,7 +206,7 @@ export default {
 </script>
 EOL
 
-cat > src/views/Dashboard.vue <<EOL
+cat >   views/Dashboard.vue <<EOL
 <template>
   <v-container>
     <v-data-table
@@ -292,7 +292,7 @@ export default {
 </script>
 EOL
 
-cat > src/stores/fruits.js <<EOL
+cat >   stores/fruits.js <<EOL
 import { defineStore } from 'pinia'
 import api from '@/services/api'
 
@@ -349,7 +349,7 @@ export default defineConfig({
 EOL
 
 # Create App.vue
-cat > src/App.vue <<EOL
+cat >   App.vue <<EOL
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
